@@ -38,6 +38,7 @@ def appendToVideo(frameIn):
         _currVideo.write(frameIn)
     if timeSinceLastChime.total_seconds() >= VIDEO_CAPTURE_LENGTH_SECONDS and _currVideo is not None:
         print("Finalizing video and closing...")
+        resetBaseFrames(frameIn, True)
         _currVideo.release()
         _currVideo = None
         convertToMP4()
@@ -46,11 +47,11 @@ def convertToMP4():
     ffmpeg.input(aviFileName).output("./motion" + _lastChime.strftime("%d-%B-%H-%M-%S") + ".mp4").run()
 
 
-def resetBaseFrames(newBaseFrame):
+def resetBaseFrames(newBaseFrame, force=False):
     global gray1
     global _lastBaseFrameReset
     timesinceLastBaseFrameReset = datetime.datetime.now() - _lastBaseFrameReset
-    if timesinceLastBaseFrameReset.total_seconds() > BASE_FRAME_RESET_SECONDS:
+    if force or timesinceLastBaseFrameReset.total_seconds() > BASE_FRAME_RESET_SECONDS:
         _lastBaseFrameReset = datetime.datetime.now()
         gray1 = cv2.cvtColor(newBaseFrame, cv2.COLOR_BGR2GRAY)
         print("Resetting base frame")
