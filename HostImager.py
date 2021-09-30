@@ -1,8 +1,12 @@
 #!/usr/local/bin/python3
 
-import numpy as np
 import ImageTransferService
 import cv2 as cv
+import sys
+
+if len(sys.argv) < 2:
+    print("Provide a name argument")
+    exit()
 
 if __name__ == "__main__":
 
@@ -17,15 +21,9 @@ if __name__ == "__main__":
     # Check remote display is up
     print(RemoteDisplay.ping())
 
-    # Create BGR image
-    # w, h = 640, 480
-    # im = np.zeros((h,w,3),dtype=np.uint8)
-
-    # for c in range(256):
     while True:
-        # im[:,:,0] = c
         ret, frame = cap.read()
-        RemoteDisplay.sendImage(frame)
+        RemoteDisplay.sendImage(frame, sys.argv[1])
         if cv.waitKey(1) == ord('q'):
             break
 

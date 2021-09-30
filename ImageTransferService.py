@@ -14,9 +14,9 @@ class ImageTransferService:
     def ping(self):
         return self.conn.ping()
 
-    def sendImage(self,im, name='latest', Q=75):
+    def sendImage(self,im, cameraName, name='latest', Q=75):
         _, JPEG = cv2.imencode(".JPG", im, [int(cv2.IMWRITE_JPEG_QUALITY), Q])
-        myDict = { 'frameNum': self.frameNum, 'Data':JPEG.tobytes() }
+        myDict = { 'frameNum': self.frameNum, 'Data':JPEG.tobytes(), 'cameraName': cameraName }
         self.conn.hmset(name, myDict)
         self.frameNum += 1
 
@@ -25,5 +25,7 @@ class ImageTransferService:
         Data = myDict.get(b'Data')
         if Data is None:
             return None
-        im = cv2.imdecode(np.frombuffer(Data,dtype=np.uint8), cv2.IMREAD_COLOR)
-        return im
+        # return cv2.imdecode(np.frombuffer(Data, dtype=np.uint8), cv2.IMREAD_COLOR)
+        im = cv2.imdecode(np.frombuffer(Data, dtype=np.uint8), cv2.IMREAD_COLOR)
+        myDict['im'] = im 
+        return myDict
