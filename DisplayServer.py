@@ -125,7 +125,7 @@ if __name__ == "__main__":
     server.set_fn_message_received(message_received)
 
     # websocket.enableTrace(True)
-    ws = websocket.WebSocketApp("ws://10.13.18.7:443", on_message = on_message, on_error = on_error, on_close = on_close)
+    ws = websocket.WebSocketApp("ws://192.168.88.212:443", on_message = on_message, on_error = on_error, on_close = on_close)
     ws.on_open = on_open
     
     # Kick a thread off for 
