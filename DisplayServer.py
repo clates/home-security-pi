@@ -93,6 +93,7 @@ def on_message(ws, message):
         This method is invoked when ever the client
         receives any message from server
     '''
+    print("Message received: " + str(message))
     server.send_message_to_all(message)
 def on_error(ws, error):
     '''
@@ -100,7 +101,7 @@ def on_error(ws, error):
     '''
     print("received error as {}".format(error))
 
-def on_close(ws):
+def on_close(ws, ido, nothing):
     '''
         This method is invoked when the connection between the 
         client and server is closed
